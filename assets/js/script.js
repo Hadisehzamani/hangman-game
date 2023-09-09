@@ -2,11 +2,13 @@ const $ = document
 let currentWord;
 let wrongGuessCounter = 0;
 let maxWrongGuess = 6;
+let correctLetters = [];
 
 const keyboardContainer = $.querySelector('.keyboard-container')
 const wordDisplayContainer = $.querySelector('.word-display')
 const gussesText = $.querySelector('.gusses-text span')
 const hangmanImage = $.querySelector('.gallows img')
+const modal = $.querySelector('.game-modal')
 
 //getting random word
 const getRandomWord = () => {
@@ -28,6 +30,7 @@ const clickedBtn = (btn , clickedLetter) => {
         //checking letter by letter
         [...currentWord].forEach((letter, index) => {
             if(letter === clickedLetter) {
+                correctLetters.push(letter)
                 wordDisplayContainer.querySelectorAll("li")[index].innerText = letter;
                 wordDisplayContainer.querySelectorAll("li")[index].classList.add('guessed');
             }
@@ -39,6 +42,19 @@ const clickedBtn = (btn , clickedLetter) => {
     }
     gussesText.innerText = `${wrongGuessCounter} / ${maxWrongGuess}`;
     btn.disabled = true;
+
+    if(currentWord.length == correctLetters.length) return gameOver(true);
+    if(wrongGuessCounter == maxWrongGuess) return gameOver(false);
+}
+
+//showing modal with relevant details
+const gameOver = (isVictory) => {
+    const modalText = isVictory ? `You found the word:` : 'The correct word was:';
+    modal.querySelector("img").src = `./assets/images/${isVictory ? 'victory' : 'lost'}.gif`;
+    modal.querySelector("h1").innerText = isVictory ? 'Congrats!' : 'Game Over!';
+    modal.querySelector("p").innerHTML = `${modalText} <b>${currentWord}</b>`;
+    modal.classList.add("show");
+    $.querySelector('.container').style.filter = 'blur(6px)'
 }
 
 //creating keyboard buttons
