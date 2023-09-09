@@ -6,6 +6,7 @@ let maxWrongGuess = 6;
 const keyboardContainer = $.querySelector('.keyboard-container')
 const wordDisplayContainer = $.querySelector('.word-display')
 const gussesText = $.querySelector('.gusses-text span')
+const hangmanImage = $.querySelector('.gallows img')
 
 //getting random word
 const getRandomWord = () => {
@@ -33,6 +34,8 @@ const clickedBtn = (btn , clickedLetter) => {
         })
     }else {
         wrongGuessCounter++;
+        //change gallows with wrong guesses
+        hangmanImage.src = `./assets/images/hangman-${wrongGuessCounter}.svg`
     }
     gussesText.innerText = `${wrongGuessCounter} / ${maxWrongGuess}`;
     btn.disabled = true;
