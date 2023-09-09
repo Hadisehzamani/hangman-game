@@ -70,7 +70,7 @@ h1 {
 .container .game-box {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
     justify-content: center;
     align-items: center;
     max-width: 500px;
@@ -79,7 +79,6 @@ h1 {
 .hint,
 .gusses-text {
     font-size: 18px;
-    margin-bottom: 10px;
     text-align: center;
 }
 
