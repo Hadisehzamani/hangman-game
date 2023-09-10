@@ -3,6 +3,7 @@ let currentWord;
 let wrongGuessCounter = 0;
 let maxWrongGuess = 6;
 let correctLetters = [];
+let usedLetters = [];
 
 const keyboardContainer = $.querySelector('.keyboard-container')
 const wordDisplayContainer = $.querySelector('.word-display')
@@ -13,6 +14,7 @@ const modal = $.querySelector('.game-modal')
 
 // reset game for play again
 const resetGame = () => {
+    usedLetters = [];
     correctLetters = [];
     wrongGuessCounter = 0;
     hangmanImage.src = './assets/images/hangman-0.svg'
@@ -80,12 +82,25 @@ const gameOver = (isVictory) => {
 //creating keyboard buttons
 for(let i = 97;i <= 122;i++) {
     const btn = $.createElement('button');
+    btn.setAttribute('id', String.fromCharCode(i))
     btn.innerText = String.fromCharCode(i);
+    //console.log(btn);
     keyboardContainer.appendChild(btn)
     btn.addEventListener("click", e => clickedBtn(e.target, String.fromCharCode(i)))
 }
 
-
+//for useing keyboard keys to guess
+const getUserKey = (e) => {
+    let userKey = e.key.toLowerCase()
+    if (usedLetters.includes(userKey)) {
+        alert('you selected this word before');
+    }else {
+        usedLetters.push(userKey);
+        let userKeyId = this.document.getElementById(userKey)
+        clickedBtn(userKeyId, userKey)
+    }
+}
 
 getRandomWord()
+window.addEventListener('keypress', getUserKey)
 modal.querySelector('button').addEventListener('click', getRandomWord)
