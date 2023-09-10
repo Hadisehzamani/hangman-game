@@ -10,6 +10,22 @@ const gussesText = $.querySelector('.gusses-text span')
 const hangmanImage = $.querySelector('.gallows img')
 const modal = $.querySelector('.game-modal')
 
+
+// reset game for play again
+const resetGame = () => {
+    correctLetters = [];
+    wrongGuessCounter = 0;
+    hangmanImage.src = './assets/images/hangman-0.svg'
+    gussesText.innerText = `${wrongGuessCounter} / ${maxWrongGuess}`
+    wordDisplayContainer.innerHTML = currentWord.split("").map(() => `<li class="letter"></li>`).join("");
+    keyboardContainer.querySelectorAll('button').forEach((btn) => {
+        btn.disabled = false;
+        btn.style.cursor = 'pointer'
+    })
+    modal.classList.remove('show')
+    $.querySelector('.container').style.filter = 'blur(0px)'
+}
+
 //getting random word
 const getRandomWord = () => {
     let categoryTopics = Object.keys(wordList);
@@ -21,7 +37,7 @@ const getRandomWord = () => {
     console.log(currentWord);
     $.querySelector('.hint span').innerText = randomWord.hint;
     $.querySelector('.subject span').innerText = randomCategory;
-    wordDisplayContainer.innerHTML = currentWord.split("").map(() => `<li class="letter"></li>`).join("")
+    resetGame();
 }
 
 //function for checking the letters that is existing ot not
@@ -55,6 +71,10 @@ const gameOver = (isVictory) => {
     modal.querySelector("p").innerHTML = `${modalText} <b>${currentWord}</b>`;
     modal.classList.add("show");
     $.querySelector('.container').style.filter = 'blur(6px)'
+    keyboardContainer.querySelectorAll('button').forEach((btn) => {
+        btn.disabled = true;
+        btn.style.cursor = 'default'
+    })
 }
 
 //creating keyboard buttons
@@ -65,4 +85,7 @@ for(let i = 97;i <= 122;i++) {
     btn.addEventListener("click", e => clickedBtn(e.target, String.fromCharCode(i)))
 }
 
+
+
 getRandomWord()
+modal.querySelector('button').addEventListener('click', getRandomWord)
