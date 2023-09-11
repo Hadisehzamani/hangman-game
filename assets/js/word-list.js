@@ -1,5 +1,5 @@
 const wordList = {
-    programLanguage: [
+    programmingLanguage: [
         {word: 'Javascript', hint: "The language of the web."},
         {word: 'Python', hint: "Named after a British comedy group."},
         {word: 'Java', hint: "Not just a cup of coffee."},
