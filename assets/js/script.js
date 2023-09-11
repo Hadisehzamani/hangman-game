@@ -78,7 +78,7 @@ const gameOver = (isVictory) => {
         btn.disabled = true;
         btn.style.cursor = 'default'
     })
-    playResultAudio(isVictory)
+    isVictory ? PlayAudio("winner.mp3") : PlayAudio("gameOver.mp3");
 }
 
 //creating keyboard buttons
@@ -105,17 +105,10 @@ const getUserKey = (e) => {
 
 
 //for play audio after the end of the game for result
-const playResultAudio = (isvictory) => {
-    let gameResultSource = $.createElement('source')
-    gameResultAudio.type = 'audio/ogg'
-    if(isvictory == true){
-        gameResultSource.src = "./assets/music/winner.mp3"
-    }else {
-        gameResultSource.src = './assets/music/gameOver.mp3'
-    }
-    resultAudio.append(gameResultSource);
-    resultAudio.play()
-}
+const PlayAudio = (name) => {
+    const audio = new Audio(`../../assets/music/${name}`);
+    audio.play();
+};
 
 getRandomWord()
 window.addEventListener('keypress', getUserKey)
