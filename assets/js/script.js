@@ -10,6 +10,7 @@ const wordDisplayContainer = $.querySelector('.word-display')
 const gussesText = $.querySelector('.gusses-text span')
 const hangmanImage = $.querySelector('.gallows img')
 const modal = $.querySelector('.game-modal')
+const resultAudio = $.querySelector('#resultAudio')
 
 
 // reset game for play again
@@ -77,6 +78,7 @@ const gameOver = (isVictory) => {
         btn.disabled = true;
         btn.style.cursor = 'default'
     })
+    playResultAudio(isVictory)
 }
 
 //creating keyboard buttons
@@ -92,13 +94,27 @@ for(let i = 97;i <= 122;i++) {
 //for useing keyboard keys to guess
 const getUserKey = (e) => {
     let userKey = e.key.toLowerCase()
-    if (usedLetters.includes(userKey)) {
+    if (usedLetters.includes(userKey) || correctLetters.includes(userKey)) {
         alert('you selected this word before');
     }else {
         usedLetters.push(userKey);
         let userKeyId = this.document.getElementById(userKey)
         clickedBtn(userKeyId, userKey)
     }
+}
+
+
+//for play audio after the end of the game for result
+const playResultAudio = (isvictory) => {
+    let gameResultSource = $.createElement('source')
+    gameResultAudio.type = 'audio/ogg'
+    if(isvictory == true){
+        gameResultSource.src = "./assets/music/winner.mp3"
+    }else {
+        gameResultSource.src = './assets/music/gameOver.mp3'
+    }
+    resultAudio.append(gameResultSource);
+    resultAudio.play()
 }
 
 getRandomWord()
