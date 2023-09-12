@@ -2,8 +2,9 @@ const $ = document
 let currentWord;
 let wrongGuessCounter = 0;
 let maxWrongGuess = 6;
-let correctLetters = [];
-let usedLetters = [];
+let correctLettersWithBtn = [];
+let usedLetters= [];
+let usedCorrectLettersWithKeyboard = [];
 
 const keyboardContainer = $.querySelector('.keyboard-container')
 const wordDisplayContainer = $.querySelector('.word-display')
@@ -15,8 +16,9 @@ const resultAudio = $.querySelector('#resultAudio')
 
 // reset game for play again
 const resetGame = () => {
+    usedCorrectLettersWithKeyboard = [];
+    correctLettersWithBtn = [];
     usedLetters = [];
-    correctLetters = [];
     wrongGuessCounter = 0;
     hangmanImage.src = './assets/images/hangman-0.svg'
     gussesText.innerText = `${wrongGuessCounter} / ${maxWrongGuess}`
@@ -49,7 +51,7 @@ const clickedBtn = (btn , clickedLetter) => {
         //checking letter by letter
         [...currentWord].forEach((letter, index) => {
             if(letter === clickedLetter) {
-                correctLetters.push(letter)
+                correctLettersWithBtn.push(letter)
                 wordDisplayContainer.querySelectorAll("li")[index].innerText = letter;
                 wordDisplayContainer.querySelectorAll("li")[index].classList.add('guessed');
             }
@@ -58,11 +60,12 @@ const clickedBtn = (btn , clickedLetter) => {
         wrongGuessCounter++;
         //change gallows with wrong guesses
         hangmanImage.src = `./assets/images/hangman-${wrongGuessCounter}.svg`
+        usedLetters.push(clickedLetter)
     }
     gussesText.innerText = `${wrongGuessCounter} / ${maxWrongGuess}`;
     btn.disabled = true;
 
-    if(currentWord.length == correctLetters.length) return gameOver(true);
+    if(currentWord.length == correctLettersWithBtn.length) return gameOver(true);
     if(wrongGuessCounter == maxWrongGuess) return gameOver(false);
 }
 
@@ -94,10 +97,14 @@ for(let i = 97;i <= 122;i++) {
 //for useing keyboard keys to guess
 const getUserKey = (e) => {
     let userKey = e.key.toLowerCase()
-    if (usedLetters.includes(userKey) || correctLetters.includes(userKey)) {
+    if (usedCorrectLettersWithKeyboard.includes(userKey) || correctLettersWithBtn.includes(userKey)) {
+        alert('you selected this word before');
+    }else if(usedLetters.includes(userKey)){
         alert('you selected this word before');
     }else {
-        usedLetters.push(userKey);
+        usedLetters.push(userKey)
+        console.log(usedLetters);
+        usedCorrectLettersWithKeyboard.push(userKey);
         let userKeyId = this.document.getElementById(userKey)
         clickedBtn(userKeyId, userKey)
     }
