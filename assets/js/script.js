@@ -136,7 +136,7 @@ const getUserKey = (e) => {
 
 //for play audio after the end of the game for result
 const PlayAudio = (name) => {
-    const audio = new Audio(`../../assets/music/${name}`);
+    const audio = new Audio(`./assets/music/${name}`);
     audio.play();
 };
 
