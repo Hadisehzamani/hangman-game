@@ -99,7 +99,7 @@ const gameOver = (isVictory) => {
     keyboardContainer.querySelectorAll('button').forEach((btn) => {
         btn.disabled = true;
         btn.style.cursor = 'default'
-        
+        localStorage.setItem('chosenTopic', 'randomTopic')
     })
     isVictory ? PlayAudio("winner.mp3") : PlayAudio("gameOver.mp3");
     //disable keyboard
