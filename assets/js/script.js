@@ -29,19 +29,38 @@ const resetGame = () => {
     })
     modal.classList.remove('show')
     $.querySelector('.container').style.filter = 'blur(0px)'
+    //enable keyBoard
+    document.onkeydown = function (e) {
+        return true;
+    }
 }
 
 //getting random word
 const getRandomWord = () => {
+    let chosenCategory;
+    let randomIndex;
+    let randomWord;
+    const chosenCategoryFromLocal = localStorage.getItem('chosenTopic')
     let categoryTopics = Object.keys(wordList);
-    let randomCategory = categoryTopics[Math.floor(Math.random() * categoryTopics.length)];
-    let chosenCategory = wordList[randomCategory];
-    let randomIndex = Math.floor(Math.random() * chosenCategory.length);
-    let randomWord = chosenCategory[randomIndex];
-    currentWord = randomWord.word.toLowerCase();
-    console.log(currentWord);
+    let indexOfTopic = categoryTopics.indexOf(chosenCategoryFromLocal)
+    if(categoryTopics.includes(chosenCategoryFromLocal)) {
+        //choose specific topic
+        let specificCategory = categoryTopics[indexOfTopic]
+        chosenCategory = wordList[specificCategory]
+        randomIndex = Math.floor(Math.random() * chosenCategory.length)
+        randomWord = chosenCategory[randomIndex];
+        currentWord = randomWord.word.toLowerCase();
+        $.querySelector('.subject span').innerText = specificCategory;
+    }else {
+        //choose random topic
+        let randomCategory = categoryTopics[Math.floor(Math.random() * categoryTopics.length)];
+        chosenCategory = wordList[randomCategory];
+        randomIndex = Math.floor(Math.random() * chosenCategory.length);
+        randomWord = chosenCategory[randomIndex];
+        currentWord = randomWord.word.toLowerCase();
+        $.querySelector('.subject span').innerText = randomCategory;
+    }
     $.querySelector('.hint span').innerText = randomWord.hint;
-    $.querySelector('.subject span').innerText = randomCategory;
     resetGame();
 }
 
@@ -82,6 +101,10 @@ const gameOver = (isVictory) => {
         btn.style.cursor = 'default'
     })
     isVictory ? PlayAudio("winner.mp3") : PlayAudio("gameOver.mp3");
+    //disable keyboard
+    document.onkeydown = function (e) {
+        return false;
+    }
 }
 
 //creating keyboard buttons
@@ -89,7 +112,6 @@ for(let i = 97;i <= 122;i++) {
     const btn = $.createElement('button');
     btn.setAttribute('id', String.fromCharCode(i))
     btn.innerText = String.fromCharCode(i);
-    //console.log(btn);
     keyboardContainer.appendChild(btn)
     btn.addEventListener("click", e => clickedBtn(e.target, String.fromCharCode(i)))
 }
@@ -116,6 +138,7 @@ const PlayAudio = (name) => {
     const audio = new Audio(`../../assets/music/${name}`);
     audio.play();
 };
+
 
 getRandomWord()
 window.addEventListener('keypress', getUserKey)

@@ -13,13 +13,19 @@
     </div>
     <div class="container">
         <div class="categories">
-            <a href="game-page.html" class="category" data-topic="programmingLanguage">Programming Language</a>
-            <a href="game-page.html" class="category" data-topic="animal">Animal</a>
-            <a href="game-page.html" class="category" data-topic="fruit">Fruit</a>
-            <a href="game-page.html" class="category" data-topic="sport">Sport</a>
+            <a href="game-page.html" class="category" onclick="selectTopic('programmingLanguage')" data-topic="programmingLanguage">Programming Language</a>
+            <a href="game-page.html" class="category" onclick="selectTopic('animal')" data-topic="animal">Animal</a>
+            <a href="game-page.html" class="category" onclick="selectTopic('fruit')" data-topic="fruit">Fruit</a>
+            <a href="game-page.html" class="category" onclick="selectTopic('sport')" data-topic="sport">Sport</a>
         </div>
-        <a href="game-page.html" class="category" data-topic="randomTopic">Quickly Game</a>
+        <a href="game-page.html" class="category" onclick="selectTopic('randomTopic')" data-topic="randomTopic">Quickly Game</a>
     </div>
+
+    <script>
+        function selectTopic(topic) {
+            localStorage.setItem('chosenTopic', topic)
+        }
+    </script>
 
     <script src="./assets/js/word-list.js"></script>
     <script src="./assets/js/script.js"></script>
