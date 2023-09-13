@@ -153,7 +153,12 @@ h1 {
     gap: 10px;
 }
 
-.game-modal button {
+.game-modal .modal-btns a {
+    text-decoration: none;
+}
+
+.game-modal button,
+.game-modal .modal-btns a {
     padding: 10px 0;
     border: none;
     background-color: #222831;
